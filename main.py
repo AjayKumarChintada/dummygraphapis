@@ -6,8 +6,18 @@ from pydantic import BaseModel
 from datetime import datetime, timedelta
 import numpy as np
 import random
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],  
+)
 
 # Data generation functions
 def generate_date_range(start_date: datetime, end_date: datetime, num_points: int):
