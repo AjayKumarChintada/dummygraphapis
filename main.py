@@ -3,7 +3,7 @@
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from datetime import datetime, timedelta
+import datetime
 import numpy as np
 import random
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,7 +16,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],  
     allow_headers=["*"],  
 )
@@ -75,8 +75,8 @@ class AreaChartData(BaseModel):
 @app.post("/charts/bar", response_model=List[BarChartData],tags =["Dummy Grahps"])
 def get_bar_chart_data(request: DateRangeRequest):
     try:
-        start_date = datetime.strptime(request.start_date, "%Y-%m-%d")
-        end_date = datetime.strptime(request.end_date, "%Y-%m-%d")
+        start_date = datetime.datetime.strptime(request.start_date, "%Y-%m-%d")
+        end_date = datetime.datetime.strptime(request.end_date, "%Y-%m-%d")
         return generate_bar_chart_data(start_date, end_date, request.num_points)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format")
@@ -84,8 +84,8 @@ def get_bar_chart_data(request: DateRangeRequest):
 @app.post("/charts/line", response_model=List[LineChartData],tags =["Dummy Grahps"])
 def get_line_chart_data(request: DateRangeRequest):
     try:
-        start_date = datetime.strptime(request.start_date, "%Y-%m-%d")
-        end_date = datetime.strptime(request.end_date, "%Y-%m-%d")
+        start_date = datetime.datetime.strptime(request.start_date, "%Y-%m-%d")
+        end_date = datetime.datetime.strptime(request.end_date, "%Y-%m-%d")
         return generate_line_chart_data(start_date, end_date, request.num_points)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format")
@@ -101,8 +101,8 @@ def get_scatter_data(request: ScatterRequest):
 @app.post("/charts/candlestick", response_model=List[CandlestickData],tags =["Dummy Grahps"])
 def get_candlestick_data(request: CandlestickRequest):
     try:
-        start_date = datetime.strptime(request.start_date, "%Y-%m-%d")
-        end_date = datetime.strptime(request.end_date, "%Y-%m-%d")
+        start_date = datetime.datetime.strptime(request.start_date, "%Y-%m-%d")
+        end_date = datetime.datetime.strptime(request.end_date, "%Y-%m-%d")
         return generate_candlestick_data(start_date, end_date, request.num_points)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format")
@@ -114,8 +114,8 @@ def get_pie_chart_data(request: PieRequest):
 @app.post("/charts/area", response_model=List[AreaChartData],tags =["Dummy Grahps"])
 def get_area_chart_data(request: DateRangeRequest):
     try:
-        start_date = datetime.strptime(request.start_date, "%Y-%m-%d")
-        end_date = datetime.strptime(request.end_date, "%Y-%m-%d")
+        start_date = datetime.datetime.strptime(request.start_date, "%Y-%m-%d")
+        end_date = datetime.datetime.strptime(request.end_date, "%Y-%m-%d")
         return generate_area_chart_data(start_date, end_date, request.num_points)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format")
@@ -128,7 +128,7 @@ data = pd.read_excel('finstackdata.xlsx')
 
 # Helper function to convert date strings to datetime
 def convert_dates(start_date: str, end_date: str):
-    return pd.to_datetime(start_date, dayfirst=True), pd.to_datetime(end_date, dayfirst=True)
+    return pd.to_datetime(start_date, dayfirst=False), pd.to_datetime(end_date, dayfirst=False)
 
 # Pydantic Models for request validation
 class DateRangeRequest(BaseModel):

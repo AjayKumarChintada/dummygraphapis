@@ -54,16 +54,16 @@ def calculate_cash_out_flow_by_account(data, start_date, end_date):
 
 def total_cash_in(data,start_date,end_date):
     data['Date'] = pd.to_datetime(data['Date'])
-    filtered_data = data[(data['Date'] >= pd.to_datetime(start_date, dayfirst=True)) &
-                         (data['Date'] <= pd.to_datetime(end_date, dayfirst=True))]
+    filtered_data = data[(data['Date'] >= pd.to_datetime(start_date, dayfirst=False)) &
+                         (data['Date'] <= pd.to_datetime(end_date, dayfirst=False))]
     cash_in_data = filtered_data[filtered_data['Cash Flow Type'] == 'Cash Inflow']
     total_cash_inflow = cash_in_data['Amount'].sum()
     return total_cash_inflow
 
 def total_cash_out(data,start_date,end_date):
     data['Date'] = pd.to_datetime(data['Date'])
-    filtered_data = data[(data['Date'] >= pd.to_datetime(start_date, dayfirst=True)) &
-                         (data['Date'] <= pd.to_datetime(end_date, dayfirst=True))]
+    filtered_data = data[(data['Date'] >= pd.to_datetime(start_date, dayfirst=False)) &
+                         (data['Date'] <= pd.to_datetime(end_date, dayfirst=False))]
     cash_in_data = filtered_data[filtered_data['Cash Flow Type'] == 'Cash Outflow']
     total_cash_outflow = cash_in_data['Amount'].sum()
     return total_cash_outflow
